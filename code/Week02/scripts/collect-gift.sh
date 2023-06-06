@@ -1,7 +1,7 @@
 #!/bin/bash
 
-assets=/workspace/code/Week02/assets
-keypath=/workspace/keys
+assets=code/Week02/assets
+keypath=keys
 name="$1"
 collateral="$2"
 txin="$3"
@@ -23,7 +23,7 @@ cardano-cli transaction build \
     --tx-in "$txin" \
     --tx-in-script-file "$assets/gift.plutus" \
     --tx-in-inline-datum-present \
-    --tx-in-redeemer-file "$assets/unit.json" \
+    --tx-in-redeemer-file "$assets/json-data/unit.json" \
     --tx-in-collateral "$collateral" \
     --change-address "$(cat "$keypath/$name.addr")" \
     --protocol-params-file "$pp" \

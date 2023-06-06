@@ -3,17 +3,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell   #-}
 
-module Vesting where
+module Vesting2 where
 
 import           Data.Maybe                (fromJust)
 import           Plutus.V1.Ledger.Interval (contains)
 import           Plutus.V2.Ledger.Api      (BuiltinData, POSIXTime, PubKeyHash,
                                             ScriptContext (scriptContextTxInfo),
                                             TxInfo (txInfoValidRange),
-                                            Validator, from, mkValidatorScript)
-import           Plutus.V2.Ledger.Contexts (txSignedBy)
+                                            Validator, from, mkValidatorScript,
+                                            txInfoOutputs, txOutAddress, addressCredential, 
+                                            Credential (PubKeyCredential))
+--import           Plutus.V2.Ledger.Contexts (txSignedBy)
 import           PlutusTx                  (compile, unstableMakeIsData)
-import           PlutusTx.Prelude          (Bool, traceIfFalse, ($), (&&))
+import           PlutusTx.Prelude          (Bool, traceIfFalse, ($), (&&), (.), (==), (!!))
 import           Prelude                   (IO, String)
 import           Utilities                 (Network, posixTimeFromIso8601,
                                             printDataToJSON,
@@ -22,7 +24,6 @@ import           Utilities                 (Network, posixTimeFromIso8601,
 
 ---------------------------------------------------------------------------------------------------
 ----------------------------------- ON-CHAIN / VALIDATOR ------------------------------------------
-
 data VestingDatum = VestingDatum
     { beneficiary :: PubKeyHash
     , deadline    :: POSIXTime
@@ -30,16 +31,22 @@ data VestingDatum = VestingDatum
 
 unstableMakeIsData ''VestingDatum
 
+-- Modify the Vesting contract to allow anyone to sign the transaction 
+-- but only allow money to be returned to the beneficiary's address.
 {-# INLINABLE mkVestingValidator #-}
 mkVestingValidator :: VestingDatum -> () -> ScriptContext -> Bool
-mkVestingValidator dat () ctx = traceIfFalse "beneficiary's signature missing" signedByBeneficiary &&
-                                traceIfFalse "deadline is not reached" deadlineReached
+mkVestingValidator dat () ctx = traceIfFalse "beneficiary's signature missing" sendToBeneficiary &&
+                                traceIfFalse "deadline not reached" deadlineReached
   where
     info :: TxInfo
     info = scriptContextTxInfo ctx
 
-    signedByBeneficiary :: Bool
-    signedByBeneficiary = txSignedBy info $ beneficiary dat
+    sendToBeneficiary :: Bool
+    sendToBeneficiary = 
+        let pkcExpect = PubKeyCredential $ beneficiary dat
+            pkcOutput = addressCredential . txOutAddress $ (txInfoOutputs info) !! 0
+        in  pkcExpect == pkcOutput
+        
 
     deadlineReached :: Bool
     deadlineReached = contains (from $ deadline dat) $ txInfoValidRange info
@@ -55,7 +62,7 @@ validator = mkValidatorScript $$(compile [|| mkWrappedVestingValidator ||])
 ------------------------------------- HELPER FUNCTIONS --------------------------------------------
 
 saveVal :: IO ()
-saveVal = writeValidatorToFile "./assets/vesting.plutus" validator
+saveVal = writeValidatorToFile "./assets/vesting2.plutus" validator
 
 vestingAddressBech32 :: Network -> String
 vestingAddressBech32 network = validatorAddressBech32 network validator
@@ -65,3 +72,5 @@ printVestingDatumJSON pkh time = printDataToJSON $ VestingDatum
     { beneficiary = pkh
     , deadline    = fromJust $ posixTimeFromIso8601 time
     }
+
+ 

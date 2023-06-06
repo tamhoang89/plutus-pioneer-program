@@ -1,25 +1,28 @@
 #!/bin/bash
 
-assets=code/Week02/assets
+assets=code/Week03/assets
 keypath=keys
-name="$1"
-txin="$2"
-body="$assets/gift.txbody"
-tx="$assets/gift.tx"
+contract="$1"
+name="$2"
+txin="$3"
+amount="$4"
+datum_file="$5"
+body="$assets/trans/send-to-"$contract"-datum-"$datum_file".txbody"
+tx="$assets/trans/send-to-"$contract"-datum-"$datum_file".tx"
 
 # Build gift address 
 cardano-cli address build \
-    --payment-script-file "assets/fortytwo.plutus" \
+    --payment-script-file "$assets/$contract.plutus" \
     --testnet-magic 2 \
-    --out-file "assets/fortytwo.addr"
+    --out-file "$assets/$contract.addr"
 
 # Build the transaction
 cardano-cli transaction build \
     --babbage-era \
     --testnet-magic 2 \
     --tx-in "$txin" \
-    --tx-out "$(cat "$assets/gift.addr") + 3000999 lovelace" \
-    --tx-out-inline-datum-file "$assets/json-data/unit.json" \
+    --tx-out "$(cat "$assets/$contract.addr") + $amount lovelace" \
+    --tx-out-inline-datum-file "$assets/json-data/$datum_file" \
     --change-address "$(cat "$keypath/$name.addr")" \
     --out-file "$body"
     

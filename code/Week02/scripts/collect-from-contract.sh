@@ -2,25 +2,33 @@
 
 assets=code/Week02/assets
 keypath=keys
-name="$1"
-txin="$2"
-body="$assets/gift.txbody"
-tx="$assets/gift.tx"
+contract_name="$1"
+name="$2"
+collateral="$3"
+txin="$4"
+redeemer_file="$5"
 
-# Build gift address 
-cardano-cli address build \
-    --payment-script-file "assets/fortytwo.plutus" \
+pp="$assets/protocol-parameters.json"
+body="$assets/trans/collect-from-"$contract_name"-redeemer-"$redeemer_file".txbody"
+tx="$assets/trans/collect-from-"$contract_name"-redeemer-"$redeemer_file".tx"
+
+# Query the protocol parameters \
+
+cardano-cli query protocol-parameters \
     --testnet-magic 2 \
-    --out-file "assets/fortytwo.addr"
+    --out-file "$pp"
 
 # Build the transaction
 cardano-cli transaction build \
     --babbage-era \
     --testnet-magic 2 \
     --tx-in "$txin" \
-    --tx-out "$(cat "$assets/gift.addr") + 3000999 lovelace" \
-    --tx-out-inline-datum-file "$assets/json-data/unit.json" \
+    --tx-in-script-file "$assets/$contract_name.plutus" \
+    --tx-in-inline-datum-present \
+    --tx-in-redeemer-file "$assets/json-data/$redeemer_file" \
+    --tx-in-collateral "$collateral" \
     --change-address "$(cat "$keypath/$name.addr")" \
+    --protocol-params-file "$pp" \
     --out-file "$body"
     
 # Sign the transaction

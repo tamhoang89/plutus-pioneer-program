@@ -38,7 +38,9 @@ library
     exposed-modules:    Homework1
                         Homework2
                         ParameterizedVesting
+                        ParameterizedVesting2
                         Vesting
+                        Vesting2
 
 test-suite week03-homework
     import:             common-all-tests
