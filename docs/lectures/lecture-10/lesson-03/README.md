@@ -1,24 +1,17 @@
-# Lesson 6.3: Unit Testing a Smart Contract
+# Lesson 10.3: Developing smart contracts with OpShin and PyCardano (Python)
 
-Welcome to Lesson 6.3! In this lesson, you'll learn how to use unit testing in smart contacts.
+Welcome to Lesson 10.3! In this lesson, you will learn about OpShin and PyCardano. Opshin is a simple programming language for Smart Contracts based on python. PyCardano is a standalone Cardano client written in Python that allows to create and sign transactions without depending on third-party Cardano serialization tools.
 
-{% embed url="https://youtu.be/vB8hyVq3HVo" %}
+{% embed url="https://youtu.be/Ale01hnxZEg" %}
 
 {% tabs %}
-{% tab title="Learning Objectives" %}
-After completing this lesson, you'll be able to:
-
-* Explain how unit test works in Cardano.
-* Define unit test for Cardano smart contracts.
-{% endtab %}
-
 {% tab title="Additional Resources" %}
 To learn more about the topics covered in this lesson, we encourage you to review the following resources:
 
-* [How can I write unit tests for Plutus contracts?](https://cardano.stackexchange.com/questions/381/how-can-i-write-unit-tests-for-plutus-contracts)
-* [Testing smart contracts on Cardano](https://blog.iagon.com/testing-smart-contracts-on-cardano/)
-* [TxInfo Docs](https://input-output-hk.github.io/plutus-apps/main/plutus-script-utils/html/Plutus-Script-Utils-V2-Contexts.html#t:TxInfo)
-
+* [OpShin Website](https://opshin.opshin.dev/opshin/)
+* [OpShin on GitHub](https://github.com/OpShin/opshin)
+* [PyCardano Docs](https://pycardano.readthedocs.io/en/latest/)
+* [PyCardano on GitHub](https://github.com/Python-Cardano/pycardano)
 {% endtab %}
 {% endtabs %}
 

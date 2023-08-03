@@ -1,24 +1,23 @@
-# Lesson 6.3: Unit Testing a Smart Contract
+# Lesson 8.2: The Private Testnet
 
-Welcome to Lesson 6.3! In this lesson, you'll learn how to use unit testing in smart contacts.
+Welcome to Lesson 8.2! In this lesson, you'll learn how set up and use a private Cardano testnet.
 
-{% embed url="https://youtu.be/vB8hyVq3HVo" %}
+{% embed url="https://youtu.be/BBqOZAuMx1c" %}
 
 {% tabs %}
 {% tab title="Learning Objectives" %}
 After completing this lesson, you'll be able to:
 
-* Explain how unit test works in Cardano.
-* Define unit test for Cardano smart contracts.
+* Explain what a testnet is.
+* Understand the benefits of using a testnet while developing and testing smart contacts.
+* Set up and execute a private Cardano testnet.
+* Interact with a private testnet by using Cardano CLI.
 {% endtab %}
 
-{% tab title="Additional Resources" %}
-To learn more about the topics covered in this lesson, we encourage you to review the following resources:
+{% tab title="Lesson Resources" %}
+Internet resources mentioned in the lesson's video:
 
-* [How can I write unit tests for Plutus contracts?](https://cardano.stackexchange.com/questions/381/how-can-i-write-unit-tests-for-plutus-contracts)
-* [Testing smart contracts on Cardano](https://blog.iagon.com/testing-smart-contracts-on-cardano/)
-* [TxInfo Docs](https://input-output-hk.github.io/plutus-apps/main/plutus-script-utils/html/Plutus-Script-Utils-V2-Contexts.html#t:TxInfo)
-
+* [Cardano private testnet repository](https://github.com/woofpool/cardano-private-testnet-setup/tree/babbage)
 {% endtab %}
 {% endtabs %}
 

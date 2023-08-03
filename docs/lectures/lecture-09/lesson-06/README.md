@@ -1,24 +1,15 @@
-# Lesson 6.3: Unit Testing a Smart Contract
+# Lesson 9.6: Burning Stablecoins and Liquidating Positions
 
-Welcome to Lesson 6.3! In this lesson, you'll learn how to use unit testing in smart contacts.
+Welcome to Lesson 9.6! In this lesson, you'll learn how to burn and liquidate positions for stablecoins in Cardano properly.
 
-{% embed url="https://youtu.be/vB8hyVq3HVo" %}
+{% embed url="https://youtu.be/u2cUeD72MrQ" %}
 
 {% tabs %}
 {% tab title="Learning Objectives" %}
 After completing this lesson, you'll be able to:
 
-* Explain how unit test works in Cardano.
-* Define unit test for Cardano smart contracts.
-{% endtab %}
-
-{% tab title="Additional Resources" %}
-To learn more about the topics covered in this lesson, we encourage you to review the following resources:
-
-* [How can I write unit tests for Plutus contracts?](https://cardano.stackexchange.com/questions/381/how-can-i-write-unit-tests-for-plutus-contracts)
-* [Testing smart contracts on Cardano](https://blog.iagon.com/testing-smart-contracts-on-cardano/)
-* [TxInfo Docs](https://input-output-hk.github.io/plutus-apps/main/plutus-script-utils/html/Plutus-Script-Utils-V2-Contexts.html#t:TxInfo)
-
+* Describe how the burn and liquidates processes work.
+* Contrast the checks required while burning and liquidating tokens.
 {% endtab %}
 {% endtabs %}
 
