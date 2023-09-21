@@ -85,9 +85,9 @@ async function runTest(dtm: NegativeRTimedDatum, r: NegativeRTimedRedeemer, n: n
 
   emulator.awaitBlock(10);
 
-  //console.log(await emulator.getUtxos(address2));
+//  console.log(await emulator.getUtxos(address2));
 }
-//await runTest({deadline:BigInt(Date.now()+20000*5+1000)},-42n,5*20+1);
+// await runTest({deadline:BigInt(Date.now()+20000*5+1000)},-42n,5*20+1);
 
 // UNIT tests
 
@@ -141,9 +141,9 @@ const negativeBigIntArbitrary = fc.bigIntN(256).filter((n:bigint) => n <= 0n);
 // create only random 256 bit positive big integers for r.
 const positiveBigIntArbitrary = fc.bigIntN(256).filter((n:bigint) => n > 0n); 
 // create only random integers that represent claiming after the deadline
-const afterDeadlineWaits = fc.integer().filter((n: number) => n >= dl);
+const afterDeadlineWaits = fc.integer().filter((n: number) => n >= 100);
 // create only random integers that represent claiming before the deadline
-const beforeDeadlineWaits = fc.integer().filter((n: number) => n < dl);
+const beforeDeadlineWaits = fc.integer().filter((n: number) => n < 100);
 
 Deno.test("PT: Negative redeemer after deadline always succeeds", () => {
   fc.assert(fc.asyncProperty(
@@ -155,7 +155,8 @@ Deno.test("PT: Negative redeemer after deadline always succeeds", () => {
         throw error
       };
     }
-  ),{numRuns: 100});
+  ),{numRuns:100});
+  // ),{numRuns:100, verbose: true});
 });
 
 Deno.test("PT: Positive redeemer after deadline always fails", () => {
@@ -170,11 +171,12 @@ Deno.test("PT: Positive redeemer after deadline always fails", () => {
       assert(errorThrown,'Test failed for r= ' + r + ' and n= '+ n);      
     }
   ),{numRuns:100});
+  // ),{numRuns:100, verbose: true});
 })
 
 Deno.test("PT: Anything before the deadline always fails", () => {
   fc.assert(fc.asyncProperty(
-    fc.bigIntN(256), beforeDeadlineWaits,async (r:bigint, n: number) => {
+    fc.bigIntN(256), beforeDeadlineWaits, async (r:bigint, n: number) => {
       let errorThrown = false;
       try {
         await runTest({deadline:BigInt(Date.now()+dl)},r,n);
@@ -183,5 +185,6 @@ Deno.test("PT: Anything before the deadline always fails", () => {
       }
       assert(errorThrown,'Test failed for r= ' + r + ' and n= ' + n);      
     }
-  ),{numRuns:100});
+  // ),{numRuns:100});
+  ),{numRuns:100, verbose: true});
 })
