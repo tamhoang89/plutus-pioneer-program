@@ -48,6 +48,9 @@ main = defaultMain $ do
 -- | Make Run an instance of Testable so we can use it with QuickCheck
 instance Testable a => Testable (Run a) where
   property rp = let (a,_) = runMock rp $ initMock defaultBabbage (adaValue 10_000_000) in property a
+-- property :: prop -> Property
+-- runMock :: Run a -> Mock -> (a, Mock)
+-- initMock :: MockConfig -> Value -> Mock
 
 -- Make POSIXTime an instance of Arbitrary so QuickCheck can generate random values to test
 instance Arbitrary POSIXTime where
@@ -112,6 +115,11 @@ runChecks shouldConsume deadline redeemer =
     where check = do
             balancesMatch <- run $ testValues shouldConsume deadline redeemer
             assert balancesMatch
+-- collect :: (Show a, Testable prop) => a -> prop -> Property
+-- monadic :: (Testable a, Monad m) => (Run Property -> Property) -> PropertyM Run () -> Property
+-- property :: (Testable prop)      =>  Run Property -> Property
+-- run :: Monad m => Run Bool -> PropertyM Run Bool
+-- assert :: Monad m => Bool -> PropertyM Run ()
 
 
 -- Function to test if both creating an consuming script UTxOs works properly

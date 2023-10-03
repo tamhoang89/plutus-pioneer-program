@@ -7,18 +7,21 @@ module Main where
 import           Control.Monad        (mapM, replicateM, unless)
 import qualified NegativeRTimed       as OnChain
 import           Plutus.Model         (Ada (Lovelace), DatumMode (HashDatum),
-                                       Run, Tx, TypedValidator (TypedValidator),
+                                       Run, Tx (..), TypedValidator (TypedValidator),
                                        UserSpend, ada, adaValue, currentTimeRad,
                                        defaultBabbage, logError, mustFail,
                                        newUser, payToKey, payToScript, spend,
-                                       spendScript, submitTx, testNoErrors,
-                                       toV2, userSpend, utxoAt, validateIn,
-                                       valueAt, waitUntil)
+                                       spendScript, submitTx, testNoErrors,wait,
+                                       toV2, userSpend, utxoAt, validateIn, currentTimeInterval,
+                                       valueAt, waitUntil, logInfo, currentTime)
+
+import qualified Plutus.Model.Fork.Ledger.Tx as Trans
+
 import           Plutus.V2.Ledger.Api (POSIXTime, PubKeyHash,
                                        TxOut (txOutValue), TxOutRef, Value)
 import           PlutusTx.Builtins    (Integer, mkI)
 import           PlutusTx.Prelude     (Eq ((==)), ($), (&&), (.))
-import           Prelude              (IO, mconcat)
+import           Prelude              (IO, mconcat, show)
 import           Test.Tasty           (defaultMain, testGroup)
 
 ---------------------------------------------------------------------------------------------------
@@ -75,21 +78,38 @@ consumingTx dl redeemer usr ref val =
 -- Function to test if both creating and consuming script UTxOs works properly
 testScript :: POSIXTime -> Integer -> Run ()
 testScript d r = do
+
+  --logError "start"
   -- SETUP USERS
   [u1, u2] <- setupUsers
+
+  --logError "after setup users"
+
   -- USER 1 LOCKS 100 Lovelaces ("val") IN VALIDATOR
   let val = adaValue 100                    -- Define value to be transfered
   sp <- spend u1 val                        -- Get user's UTXO that we should spend
   submitTx u1 $ lockingTx d sp val          -- User 1 submits "lockingTx" transaction
+  
+  --logError "looking tx done"
   -- WAIT FOR A BIT
   waitUntil waitBeforeConsumingTx
   -- USER 2 TAKES "val" FROM VALIDATOR
   utxos <- utxoAt valScript                 -- Query blockchain to get all UTxOs at script
   let [(ref, out)] = utxos                  -- We know there is only one UTXO (the one we created before)
   ct <- currentTimeRad 100                  -- Create time interval with equal radius around current time
+  --ct <- currentTimeInterval (-100) 0
+  logError $ show ct
+
   tx <- validateIn ct $ consumingTx d r u2 ref (txOutValue out)  -- Build Tx
+  
+  --logError $ show $ Trans.txValidRange $ tx'plutus tx
+
   submitTx u2 tx                            -- User 2 submits "consumingTx" transaction
+
+  --logError "unlocking done"
   -- CHECK THAT FINAL BALANCES MATCH EXPECTED BALANCES
   [v1, v2] <- mapM valueAt [u1, u2]                     -- Get final balances of both users
   unless (v1 == adaValue 900 && v2 == adaValue 1100) $  -- Check if final balances match expected balances
     logError "Final balances are incorrect"
+  --logInfo "finish"
+
