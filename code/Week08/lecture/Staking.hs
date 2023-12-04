@@ -69,7 +69,7 @@ stakeValidator addr = mkStakeValidatorScript $
     $$(PlutusTx.compile [|| mkWrappedStakeValidator ||])
     `PlutusTx.applyCode`
     PlutusTx.liftCode addr
-
+ 
 ---------------------------------------------------------------------------------------------------
 ------------------------------------- HELPER FUNCTIONS --------------------------------------------
 

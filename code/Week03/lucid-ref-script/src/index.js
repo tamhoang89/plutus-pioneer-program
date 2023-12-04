@@ -32,7 +32,7 @@ async function loadCardano() {
         const api = await nami.enable();
         console.log('nami enabled');
         const lucid = await L.Lucid.new(
-            new L.Blockfrost("https://cardano-preview.blockfrost.io/api/v0", "previewogD4l7bhmMVw6Haw9kWBQ9ooe4GJekZc"),
+            new L.Blockfrost("https://cardano-preview.blockfrost.io/api/v0", "previewcLWThYogAK96HvzfBSDhUpZPC0XhTmEE"),
             "Preview",
         );
         console.log('lucid active');

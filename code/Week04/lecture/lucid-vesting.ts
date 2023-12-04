@@ -16,10 +16,10 @@ import { secretSeed } from "./seed.ts"
 // set blockfrost endpoint
 const lucid = await Lucid.new(
   new Blockfrost(
-    "https://cardano-preprod.blockfrost.io/api/v0",
-    "insert you own api key here"
+    "https://cardano-preview.blockfrost.io/api/v0",
+    "previewcLWThYogAK96HvzfBSDhUpZPC0XhTmEE"
   ),
-  "Preprod"
+  "Preview"
 );
 
 // load local stored seed as a wallet into lucid

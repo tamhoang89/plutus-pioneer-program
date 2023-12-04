@@ -37,4 +37,5 @@ library
                       , homework
     exposed-modules:    Staking
                       , Homework
+                      , Gift
     build-depends:      utilities

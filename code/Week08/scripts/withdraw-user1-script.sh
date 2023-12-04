@@ -25,7 +25,7 @@ cardano-cli transaction build \
     --out-file $body \
     --tx-in $txin \
     --tx-in-collateral $txin \
-    --tx-out "$(cat /workspace/cardano-private-testnet-setup/private-testnet/addresses/payment2.addr)+$amt2 lovelace" \
+    --tx-out "$(cat /workspace/cardano-private-testnet-setup/private-testnet/addresses/payment3.addr)+$amt2 lovelace" \
     --withdrawal "$(cat $tmp/user1-script-stake.addr)+$amt1" \
     --withdrawal-script-file /workspace/code/Week08/assets/staking.plutus \
     --withdrawal-redeemer-file /workspace/code/Week08/assets/unit.json \
